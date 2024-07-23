@@ -1,1 +1,1 @@
-rootProject.name = 'otl'
+rootProject.name = "otl"

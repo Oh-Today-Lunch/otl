@@ -11,14 +11,12 @@ class UserService(
 ) {
 
     fun signUp(request: SignUpRequest): Boolean {
-
-        return try {
-            userRepository.save(User(request))
-            true
-        } catch (e: Exception) {
-            println("Error during sign-up: ${e.message}")
-            false
+        val optionalUser = userRepository.findByEmail(request.email)
+        if (optionalUser.isPresent){
+            throw IllegalStateException("중복임")
         }
+        userRepository.save(User(request))
+        return true
     }
 
 }
