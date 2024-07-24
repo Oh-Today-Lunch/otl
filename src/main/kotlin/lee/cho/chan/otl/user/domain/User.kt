@@ -2,45 +2,58 @@ package lee.cho.chan.otl.user.domain
 
 import jakarta.persistence.*
 import lee.cho.chan.otl.user.dto.SignUpRequest
+import lombok.Getter
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
 @Entity
 @Table(name = "user")
+@EntityListeners(AuditingEntityListener::class)
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private val uuid: UUID,
+    val uuid: UUID,
 
     @Column(nullable = false, unique = true)
-    private val email: String,
+    val email: String,
 
     @Column(nullable = false)
-    private val password: String,
+    val password: String,
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @LastModifiedDate
+    val updatedAt: LocalDateTime? = null,
 
     @Column(nullable = false)
-    private val createdAt: String,
+    val isAlarm: Boolean,
 
-    private val updatedAt: LocalDate?,
-
-    @Column(nullable = false)
-    private val isAlarm: Boolean,
-
-    private val alarmTime: LocalTime?,
+    val alarmTime: LocalDateTime?,
 
     @Column(nullable = false)
-    private val selectedStation: String
+    val selectedStation: String
 
 ) {
-    constructor(signUpRequest: SignUpRequest) : this(
-        uuid = UUID.randomUUID(),
-        email = signUpRequest.email,
-        password = signUpRequest.password,
-        createdAt = LocalDate.now().toString(),
-        updatedAt = null,
-        isAlarm = false,
-        alarmTime = null,
-        selectedStation = null.toString()
-    )
+    companion object {
+        fun of(email: String, password: String, isAlarm: Boolean,selectedStation: String): User {
+            return User(
+                uuid = UUID.randomUUID(),
+                email = email,
+                password = password,
+                createdAt = LocalDateTime.now(),
+                updatedAt = null,
+                isAlarm = isAlarm,
+                alarmTime = null,
+                selectedStation = selectedStation)
+
+        }
+    }
+
 }
