@@ -5,6 +5,7 @@ import lee.cho.chan.otl.user.dto.LoginRequest
 import lee.cho.chan.otl.user.dto.SignUpRequest
 import lee.cho.chan.otl.user.dto.UserUpdateRequest
 import lee.cho.chan.otl.user.repository.UserRepository
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -94,13 +95,39 @@ class UserServiceTest {
             alarmTime = "2021-08-01T00:00:00",
             selectedStation = "역삼역"
         )
-        
+
         val resultUser = userService.update(updateRequest)
 
         assertEquals(resultUser.email, updateRequest.email)
         assertEquals(resultUser.isAlarm, updateRequest.isAlarm)
         assertEquals(LocalDateTime.parse(updateRequest.alarmTime), LocalDateTime.parse(updateRequest.alarmTime))
         assertEquals(resultUser.selectedStation, updateRequest.selectedStation)
+    }
+
+    @DisplayName("사용자 조회 성공")
+    @Test
+    fun getUser_success() {
+        val email = "testEmail"
+        val password = "testPassword"
+        val user = createUser(email, password)
+
+        `when`(userRepository.findByEmail(email)).thenReturn(Optional.of(user))
+        val userResponse = userService.getUser(email)
+
+        assertEquals(user.email, userResponse.email)
+        assertEquals(user.isAlarm , userResponse.isAlarm)
+    }
+
+    @DisplayName("사용자 조회 실패")
+    @Test
+    fun getUser_fail() {
+        val email = "testEmail"
+
+        `when`(userRepository.findByEmail(email)).thenReturn(Optional.empty())
+        assertThrows(IllegalStateException::class.java) {
+            userService.getUser(email)
+        }
+
     }
 
     private fun createUser(email: String, password: String): User {

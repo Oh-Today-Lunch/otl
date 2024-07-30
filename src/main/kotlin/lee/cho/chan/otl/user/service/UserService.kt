@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class UserService(
     private val userRepository: UserRepository
 ) {
-
+    @Transactional
     fun signUp(request: SignUpRequest): Boolean {
         val optionalUser = userRepository.findByEmail(request.email)
         if (optionalUser.isPresent){
@@ -54,6 +55,15 @@ class UserService(
             user.alarmTime.toString(),
             user.selectedStation
         )
+    }
+
+    fun getUser(userEmail: String) : UserResponse {
+        val optionalUser = userRepository.findByEmail(userEmail)
+        if (optionalUser.isEmpty){
+            throw IllegalStateException("사용자가 존재하지 않습니다")
+        }
+        val user = optionalUser.get()
+        return UserResponse(user.email,user.isAlarm,user.alarmTime.toString(),user.selectedStation)
     }
 
 }
