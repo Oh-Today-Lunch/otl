@@ -1,4 +1,4 @@
-package lee.cho.chan.otl.menu.domain
+package lee.cho.chan.otl.restaurant.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -7,12 +7,12 @@ import java.util.*
 
 
 @Entity
-internal data class Menu(
+internal data class Restaurant(
     @Id
     private val menuId: UUID,
 
     @Column(nullable = false)
-    private val name: String,
+    private val restaurantName: String,
 
     @Column(nullable = false)
     private val category: String,
@@ -26,5 +26,5 @@ internal data class Menu(
     private val weight: Int,
 
     @Column(nullable = false)
-    private val selectedStation: String
+    private val station: String
 )
