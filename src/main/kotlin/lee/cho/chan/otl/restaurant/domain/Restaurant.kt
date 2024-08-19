@@ -7,7 +7,7 @@ import java.util.*
 
 
 @Entity
-internal data class Restaurant(
+data class Restaurant(
     @Id
     private val menuId: UUID,
 
