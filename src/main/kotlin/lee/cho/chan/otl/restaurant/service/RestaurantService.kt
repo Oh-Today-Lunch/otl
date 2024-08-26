@@ -1,5 +1,6 @@
 package lee.cho.chan.otl.user.service
 
+import lee.cho.chan.otl.enum.Category
 import lee.cho.chan.otl.restaurant.domain.Restaurant
 import lee.cho.chan.otl.restaurant.domain.RestaurantDto
 import lee.cho.chan.otl.restaurant.dto.RestaurantResponse
@@ -14,6 +15,22 @@ class RestaurantService(
 ) {
     fun getAllRestaurants() : RestaurantResponse{
         val restaurants = restaurantRepository.findAll()
+        val restaurantDtos = restaurants.stream().map { restaurant ->
+            RestaurantDto(
+                restaurant.menuId,
+                restaurant.restaurantName,
+                restaurant.category,
+                restaurant.createdAt,
+                restaurant.updatedAt,
+                restaurant.weight,
+                restaurant.station
+            )
+        }.toList()
+        return RestaurantResponse(restaurantDtos)
+    }
+
+    fun getRestaurantsByCategory(category: Category): RestaurantResponse{
+        val restaurants = restaurantRepository.findByCategory(category)
         val restaurantDtos = restaurants.stream().map { restaurant ->
             RestaurantDto(
                 restaurant.menuId,
