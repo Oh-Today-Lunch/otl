@@ -5,5 +5,5 @@ import lee.cho.chan.otl.user.domain.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RestaurantRepository : JpaRepository<Restaurant, Long> {
-
+    fun findByStation(station: String) : List<Restaurant>
 }

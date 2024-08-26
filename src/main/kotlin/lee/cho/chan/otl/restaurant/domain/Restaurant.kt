@@ -3,28 +3,34 @@ package lee.cho.chan.otl.restaurant.domain
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import lee.cho.chan.otl.enum.Category
+import lombok.Getter
+import java.time.LocalDateTime
 import java.util.*
 
 
 @Entity
-data class Restaurant(
+@Getter
+class Restaurant(
     @Id
-    private val menuId: UUID,
+    val menuId: UUID,
 
     @Column(nullable = false)
-    private val restaurantName: String,
+    val restaurantName: String,
 
     @Column(nullable = false)
-    private val category: String,
+    val category: Category,
 
     @Column(nullable = false)
-    private val createdAt: String,
+    val createdAt: LocalDateTime,
 
-    private val updatedAt: String?,
-
-    @Column(nullable = false)
-    private val weight: Int,
+    val updatedAt: LocalDateTime?,
 
     @Column(nullable = false)
-    private val station: String
-)
+    val weight: Int,
+
+    @Column(nullable = false)
+    val station: String
+){
+
+}

@@ -35,6 +35,9 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+
+    //lombok
+    compileOnly("org.projectlombok:lombok")
 }
 
 tasks.withType<KotlinCompile> {
