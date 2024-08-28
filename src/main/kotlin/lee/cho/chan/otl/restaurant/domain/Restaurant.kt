@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import lee.cho.chan.otl.enum.Category
+import lee.cho.chan.otl.enum.Station
 import lombok.Getter
 import java.time.LocalDateTime
 import java.util.*
@@ -30,7 +31,7 @@ class Restaurant(
     val weight: Int,
 
     @Column(nullable = false)
-    val station: String
+    val station: Station
 ){
 
 }

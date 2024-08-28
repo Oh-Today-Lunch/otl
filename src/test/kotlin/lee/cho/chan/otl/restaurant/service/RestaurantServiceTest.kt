@@ -1,6 +1,7 @@
 package lee.cho.chan.otl.restaurant.service
 
 import lee.cho.chan.otl.enum.Category
+import lee.cho.chan.otl.enum.Station
 import lee.cho.chan.otl.restaurant.domain.Restaurant
 import lee.cho.chan.otl.restaurant.domain.RestaurantDto
 import lee.cho.chan.otl.restaurant.repository.RestaurantRepository
@@ -30,10 +31,10 @@ class RestaurantServiceTest {
     @BeforeEach
     fun setUp() {
         restaurantDtos = listOf(
-            RestaurantDto(UUID.randomUUID(), "중식당", Category.CHINESE, LocalDateTime.now(), LocalDateTime.now(), 0, "수내역"),
-            RestaurantDto(UUID.randomUUID(), "한식당", Category.KOREAN, LocalDateTime.now(), LocalDateTime.now(), 0, "수내역"),
-            RestaurantDto(UUID.randomUUID(), "양식당", Category.WESTERN, LocalDateTime.now(), LocalDateTime.now(), 0, "수내역"),
-            RestaurantDto(UUID.randomUUID(), "일식당", Category.JAPANESE, LocalDateTime.now(), LocalDateTime.now(), 0, "수내역")
+            RestaurantDto(UUID.randomUUID(), "중식당", Category.CHINESE, LocalDateTime.now(), LocalDateTime.now(), 0, Station.SUNAE),
+            RestaurantDto(UUID.randomUUID(), "한식당", Category.KOREAN, LocalDateTime.now(), LocalDateTime.now(), 0, Station.SUNAE),
+            RestaurantDto(UUID.randomUUID(), "양식당", Category.WESTERN, LocalDateTime.now(), LocalDateTime.now(), 0, Station.SUNAE),
+            RestaurantDto(UUID.randomUUID(), "일식당", Category.JAPANESE, LocalDateTime.now(), LocalDateTime.now(), 0, Station.SUNAE)
         )
     }
 
@@ -49,14 +50,23 @@ class RestaurantServiceTest {
         assertIterableEquals(restaurantDtos, restaurantResponse.restaurants)
     }
 
-    /*@DisplayName("수내역 음식점 조회")
+    @DisplayName("수내역 음식점 조회")
+    @Test
     fun get_some_station_restaurant_success() {
-        `when`(
-            restaurantRepository.findByStation(Station.SUNAE.).thenReturn(restaurants)
-            val restaurantResponse = restaurantService . getRestaurantsInStation (Station.SUNAE)
+        val sunaeRestaurantDtos = restaurantDtos.stream()
+            .filter { restaurantDto -> restaurantDto.station == Station.SUNAE }
+            .map(RestaurantDto::toEntity)
+            .toList()
 
-        assert(restaurantResponse)
-    }*/
+        val sunaeRestaurants = restaurantDtos.stream()
+            .filter { restaurantDto -> restaurantDto.station == Station.SUNAE }
+            .toList()
+        `when`(restaurantRepository.findByStation(Station.SUNAE)).thenReturn(sunaeRestaurantDtos)
+        val restaurantResponse = restaurantService.getRestaurantsByStation(Station.SUNAE)
+
+        assert(restaurantResponse.restaurants.size == 4)
+        assertIterableEquals(sunaeRestaurants, restaurantResponse.restaurants)
+    }
 
     @DisplayName("중식 카테고리의 음식점 조회")
     @Test

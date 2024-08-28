@@ -1,6 +1,7 @@
 package lee.cho.chan.otl.restaurant.domain
 
 import lee.cho.chan.otl.enum.Category
+import lee.cho.chan.otl.enum.Station
 import java.time.LocalDateTime
 import java.util.*
 
@@ -11,7 +12,7 @@ data class RestaurantDto(
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime?,
     val weight: Int,
-    val station: String
+    val station: Station
 ) {
     fun toEntity(): Restaurant {
         return Restaurant(
